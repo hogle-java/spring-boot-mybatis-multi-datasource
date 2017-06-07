@@ -1,4 +1,5 @@
-package net.yuanmomo.springboot; /**
+package net.yuanmomo.springboot;
+/**
  * Created by Hongbin.Yuan on 2017-04-03 20:04.
  */
 
@@ -21,8 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootApplication
-@ComponentScan("net.yuanmomo.springboot.springboot")
-@MapperScan("net.yuanmomo.springboot.springboot.mybatis.mapper")
+@ComponentScan("net.yuanmomo.springboot")
+@MapperScan("net.yuanmomo.springboot.mybatis.mapper")
 public class Application {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
