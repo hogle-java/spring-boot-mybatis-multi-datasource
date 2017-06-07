@@ -2,7 +2,7 @@ package net.yuanmomo.springboot.business.mybatis;
 
 import net.yuanmomo.springboot.bean.Demo;
 import net.yuanmomo.springboot.bean.DemoParam;
-import net.yuanmomo.springboot.mybatis.mapper.DemoMapper;
+import net.yuanmomo.springboot.mybatis.mapper.demo.DemoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

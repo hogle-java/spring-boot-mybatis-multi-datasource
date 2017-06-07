@@ -1,24 +1,12 @@
 package net.yuanmomo.springboot.mybatis.mapper.todo;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
-
 import java.util.List;
 import java.util.Map;
 import net.yuanmomo.springboot.bean.ToDo;
 import net.yuanmomo.springboot.bean.ToDoParam.Criteria;
 import net.yuanmomo.springboot.bean.ToDoParam.Criterion;
 import net.yuanmomo.springboot.bean.ToDoParam;
+import org.apache.ibatis.jdbc.SQL;
 
 public class ToDoSqlProvider {
 
@@ -29,11 +17,10 @@ public class ToDoSqlProvider {
      * @mbg.generated
      */
     public String countByExample(ToDoParam example) {
-        BEGIN();
-        SELECT("count(*)");
-        FROM("todo.table_to_do");
-        applyWhere(example, false);
-        return SQL();
+        SQL sql = new SQL();
+        sql.SELECT("count(*)").FROM("todo.table_to_do");
+        applyWhere(sql, example, false);
+        return sql.toString();
     }
 
     /**
@@ -43,10 +30,10 @@ public class ToDoSqlProvider {
      * @mbg.generated
      */
     public String deleteByExample(ToDoParam example) {
-        BEGIN();
-        DELETE_FROM("todo.table_to_do");
-        applyWhere(example, false);
-        return SQL();
+        SQL sql = new SQL();
+        sql.DELETE_FROM("todo.table_to_do");
+        applyWhere(sql, example, false);
+        return sql.toString();
     }
 
     /**
@@ -56,18 +43,18 @@ public class ToDoSqlProvider {
      * @mbg.generated
      */
     public String insertSelective(ToDo record) {
-        BEGIN();
-        INSERT_INTO("todo.table_to_do");
+        SQL sql = new SQL();
+        sql.INSERT_INTO("todo.table_to_do");
         
         if (record.getToDo() != null) {
-            VALUES("to_do", "#{toDo,jdbcType=INTEGER}");
+            sql.VALUES("to_do", "#{toDo,jdbcType=INTEGER}");
         }
         
         if (record.getRemark() != null) {
-            VALUES("remark", "#{remark,jdbcType=BIGINT}");
+            sql.VALUES("remark", "#{remark,jdbcType=BIGINT}");
         }
         
-        return SQL();
+        return sql.toString();
     }
 
     /**
@@ -77,22 +64,22 @@ public class ToDoSqlProvider {
      * @mbg.generated
      */
     public String selectByExample(ToDoParam example) {
-        BEGIN();
+        SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("id");
+            sql.SELECT_DISTINCT("id");
         } else {
-            SELECT("id");
+            sql.SELECT("id");
         }
-        SELECT("to_do");
-        SELECT("remark");
-        FROM("todo.table_to_do");
-        applyWhere(example, false);
+        sql.SELECT("to_do");
+        sql.SELECT("remark");
+        sql.FROM("todo.table_to_do");
+        applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
-            ORDER_BY(example.getOrderByClause());
+            sql.ORDER_BY(example.getOrderByClause());
         }
         
-        return SQL();
+        return sql.toString();
     }
 
     /**
@@ -105,23 +92,23 @@ public class ToDoSqlProvider {
         ToDo record = (ToDo) parameter.get("record");
         ToDoParam example = (ToDoParam) parameter.get("example");
         
-        BEGIN();
-        UPDATE("todo.table_to_do");
+        SQL sql = new SQL();
+        sql.UPDATE("todo.table_to_do");
         
         if (record.getId() != null) {
-            SET("id = #{record.id,jdbcType=BIGINT}");
+            sql.SET("id = #{record.id,jdbcType=BIGINT}");
         }
         
         if (record.getToDo() != null) {
-            SET("to_do = #{record.toDo,jdbcType=INTEGER}");
+            sql.SET("to_do = #{record.toDo,jdbcType=INTEGER}");
         }
         
         if (record.getRemark() != null) {
-            SET("remark = #{record.remark,jdbcType=BIGINT}");
+            sql.SET("remark = #{record.remark,jdbcType=BIGINT}");
         }
         
-        applyWhere(example, true);
-        return SQL();
+        applyWhere(sql, example, true);
+        return sql.toString();
     }
 
     /**
@@ -131,16 +118,16 @@ public class ToDoSqlProvider {
      * @mbg.generated
      */
     public String updateByExample(Map<String, Object> parameter) {
-        BEGIN();
-        UPDATE("todo.table_to_do");
+        SQL sql = new SQL();
+        sql.UPDATE("todo.table_to_do");
         
-        SET("id = #{record.id,jdbcType=BIGINT}");
-        SET("to_do = #{record.toDo,jdbcType=INTEGER}");
-        SET("remark = #{record.remark,jdbcType=BIGINT}");
+        sql.SET("id = #{record.id,jdbcType=BIGINT}");
+        sql.SET("to_do = #{record.toDo,jdbcType=INTEGER}");
+        sql.SET("remark = #{record.remark,jdbcType=BIGINT}");
         
         ToDoParam example = (ToDoParam) parameter.get("example");
-        applyWhere(example, true);
-        return SQL();
+        applyWhere(sql, example, true);
+        return sql.toString();
     }
 
     /**
@@ -150,20 +137,20 @@ public class ToDoSqlProvider {
      * @mbg.generated
      */
     public String updateByPrimaryKeySelective(ToDo record) {
-        BEGIN();
-        UPDATE("todo.table_to_do");
+        SQL sql = new SQL();
+        sql.UPDATE("todo.table_to_do");
         
         if (record.getToDo() != null) {
-            SET("to_do = #{toDo,jdbcType=INTEGER}");
+            sql.SET("to_do = #{toDo,jdbcType=INTEGER}");
         }
         
         if (record.getRemark() != null) {
-            SET("remark = #{remark,jdbcType=BIGINT}");
+            sql.SET("remark = #{remark,jdbcType=BIGINT}");
         }
         
-        WHERE("id = #{id,jdbcType=BIGINT}");
+        sql.WHERE("id = #{id,jdbcType=BIGINT}");
         
-        return SQL();
+        return sql.toString();
     }
 
     /**
@@ -172,7 +159,7 @@ public class ToDoSqlProvider {
      *
      * @mbg.generated
      */
-    protected void applyWhere(ToDoParam example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, ToDoParam example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
@@ -261,7 +248,7 @@ public class ToDoSqlProvider {
         }
         
         if (sb.length() > 0) {
-            WHERE(sb.toString());
+            sql.WHERE(sb.toString());
         }
     }
 }

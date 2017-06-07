@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -18,6 +20,7 @@ import javax.sql.DataSource;
 @MapperScan(basePackages = "net.yuanmomo.springboot.mybatis.mapper.todo", sqlSessionFactoryRef = "todoSessionFactory")
 public class ToDoDBConfiguration {
     private final MyBatisConfigurationSupport support;
+    private DataSource dataSource;
 
     public ToDoDBConfiguration(MyBatisConfigurationSupport support) {
         this.support = support;
@@ -25,14 +28,21 @@ public class ToDoDBConfiguration {
 
     @Bean
     public DataSource todoDataSource() {
-        return support.createDataSource("todo");
+        dataSource = support.createDataSource("todo");
+        return dataSource;
     }
 
     @Bean
     public SqlSessionFactory todoSessionFactory() throws Exception {
-        DataSource dataSource = this.todoDataSource();
-        System.out.println(dataSource);
-        return support.build(dataSource);
+        SqlSessionFactory sqlSessionFactory = support.build(todoDataSource());
+        System.out.println("################################ todo"+ dataSource);
+        System.out.println("################################ todo"+ sqlSessionFactory);
+        return sqlSessionFactory;
+    }
+
+    @Bean
+    public PlatformTransactionManager todoTxManager() {
+        return new DataSourceTransactionManager(dataSource);
     }
 
 }

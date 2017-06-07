@@ -9,6 +9,8 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -20,21 +22,31 @@ import javax.sql.DataSource;
 public class DemoDBConfiguration {
     private final MyBatisConfigurationSupport support;
 
+    private DataSource dataSource;
+
     public DemoDBConfiguration(MyBatisConfigurationSupport support) {
         this.support = support;
     }
 
     @Bean
-    public DataSource demoDataSource() {
-        return support.createDataSource("demo");
+    @Primary
+    public DataSource dataSource() {
+        dataSource =  support.createDataSource("demo");
+        return dataSource;
     }
 
     @Bean
     @Primary
     public SqlSessionFactory demoSessionFactory() throws Exception {
-        DataSource dataSource = this.demoDataSource();
-        System.out.println(dataSource);
-        return support.build(dataSource);
+        SqlSessionFactory sqlSessionFactory = support.build(dataSource());
+        System.out.println("################################ demo"+ dataSource);
+        System.out.println("################################ demo"+ sqlSessionFactory);
+        return sqlSessionFactory;
     }
 
+    @Bean
+    @Primary
+    public PlatformTransactionManager txManager() {
+        return new DataSourceTransactionManager(dataSource);
+    }
 }

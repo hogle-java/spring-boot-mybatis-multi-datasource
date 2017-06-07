@@ -22,7 +22,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.ServletException;
 import java.io.UnsupportedEncodingException;
@@ -39,9 +38,8 @@ import java.util.Set;
  */
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {Application.class})
+@SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 public class BaseUnitTest {
 
     /**

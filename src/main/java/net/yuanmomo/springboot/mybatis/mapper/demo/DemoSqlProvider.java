@@ -1,24 +1,12 @@
 package net.yuanmomo.springboot.mybatis.mapper.demo;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
-
 import java.util.List;
 import java.util.Map;
 import net.yuanmomo.springboot.bean.Demo;
 import net.yuanmomo.springboot.bean.DemoParam.Criteria;
 import net.yuanmomo.springboot.bean.DemoParam.Criterion;
 import net.yuanmomo.springboot.bean.DemoParam;
+import org.apache.ibatis.jdbc.SQL;
 
 public class DemoSqlProvider {
 
@@ -29,11 +17,10 @@ public class DemoSqlProvider {
      * @mbg.generated
      */
     public String countByExample(DemoParam example) {
-        BEGIN();
-        SELECT("count(*)");
-        FROM("demo.table_demo");
-        applyWhere(example, false);
-        return SQL();
+        SQL sql = new SQL();
+        sql.SELECT("count(*)").FROM("demo.table_demo");
+        applyWhere(sql, example, false);
+        return sql.toString();
     }
 
     /**
@@ -43,10 +30,10 @@ public class DemoSqlProvider {
      * @mbg.generated
      */
     public String deleteByExample(DemoParam example) {
-        BEGIN();
-        DELETE_FROM("demo.table_demo");
-        applyWhere(example, false);
-        return SQL();
+        SQL sql = new SQL();
+        sql.DELETE_FROM("demo.table_demo");
+        applyWhere(sql, example, false);
+        return sql.toString();
     }
 
     /**
@@ -56,18 +43,18 @@ public class DemoSqlProvider {
      * @mbg.generated
      */
     public String insertSelective(Demo record) {
-        BEGIN();
-        INSERT_INTO("demo.table_demo");
+        SQL sql = new SQL();
+        sql.INSERT_INTO("demo.table_demo");
         
         if (record.getNumber() != null) {
-            VALUES("number", "#{number,jdbcType=INTEGER}");
+            sql.VALUES("number", "#{number,jdbcType=INTEGER}");
         }
         
         if (record.getVersion() != null) {
-            VALUES("version", "#{version,jdbcType=BIGINT}");
+            sql.VALUES("version", "#{version,jdbcType=BIGINT}");
         }
         
-        return SQL();
+        return sql.toString();
     }
 
     /**
@@ -77,22 +64,22 @@ public class DemoSqlProvider {
      * @mbg.generated
      */
     public String selectByExample(DemoParam example) {
-        BEGIN();
+        SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("id");
+            sql.SELECT_DISTINCT("id");
         } else {
-            SELECT("id");
+            sql.SELECT("id");
         }
-        SELECT("number");
-        SELECT("version");
-        FROM("demo.table_demo");
-        applyWhere(example, false);
+        sql.SELECT("number");
+        sql.SELECT("version");
+        sql.FROM("demo.table_demo");
+        applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
-            ORDER_BY(example.getOrderByClause());
+            sql.ORDER_BY(example.getOrderByClause());
         }
         
-        return SQL();
+        return sql.toString();
     }
 
     /**
@@ -105,23 +92,23 @@ public class DemoSqlProvider {
         Demo record = (Demo) parameter.get("record");
         DemoParam example = (DemoParam) parameter.get("example");
         
-        BEGIN();
-        UPDATE("demo.table_demo");
+        SQL sql = new SQL();
+        sql.UPDATE("demo.table_demo");
         
         if (record.getId() != null) {
-            SET("id = #{record.id,jdbcType=BIGINT}");
+            sql.SET("id = #{record.id,jdbcType=BIGINT}");
         }
         
         if (record.getNumber() != null) {
-            SET("number = #{record.number,jdbcType=INTEGER}");
+            sql.SET("number = #{record.number,jdbcType=INTEGER}");
         }
         
         if (record.getVersion() != null) {
-            SET("version = #{record.version,jdbcType=BIGINT}");
+            sql.SET("version = #{record.version,jdbcType=BIGINT}");
         }
         
-        applyWhere(example, true);
-        return SQL();
+        applyWhere(sql, example, true);
+        return sql.toString();
     }
 
     /**
@@ -131,16 +118,16 @@ public class DemoSqlProvider {
      * @mbg.generated
      */
     public String updateByExample(Map<String, Object> parameter) {
-        BEGIN();
-        UPDATE("demo.table_demo");
+        SQL sql = new SQL();
+        sql.UPDATE("demo.table_demo");
         
-        SET("id = #{record.id,jdbcType=BIGINT}");
-        SET("number = #{record.number,jdbcType=INTEGER}");
-        SET("version = #{record.version,jdbcType=BIGINT}");
+        sql.SET("id = #{record.id,jdbcType=BIGINT}");
+        sql.SET("number = #{record.number,jdbcType=INTEGER}");
+        sql.SET("version = #{record.version,jdbcType=BIGINT}");
         
         DemoParam example = (DemoParam) parameter.get("example");
-        applyWhere(example, true);
-        return SQL();
+        applyWhere(sql, example, true);
+        return sql.toString();
     }
 
     /**
@@ -150,20 +137,20 @@ public class DemoSqlProvider {
      * @mbg.generated
      */
     public String updateByPrimaryKeySelective(Demo record) {
-        BEGIN();
-        UPDATE("demo.table_demo");
+        SQL sql = new SQL();
+        sql.UPDATE("demo.table_demo");
         
         if (record.getNumber() != null) {
-            SET("number = #{number,jdbcType=INTEGER}");
+            sql.SET("number = #{number,jdbcType=INTEGER}");
         }
         
         if (record.getVersion() != null) {
-            SET("version = #{version,jdbcType=BIGINT}");
+            sql.SET("version = #{version,jdbcType=BIGINT}");
         }
         
-        WHERE("id = #{id,jdbcType=BIGINT}");
+        sql.WHERE("id = #{id,jdbcType=BIGINT}");
         
-        return SQL();
+        return sql.toString();
     }
 
     /**
@@ -172,7 +159,7 @@ public class DemoSqlProvider {
      *
      * @mbg.generated
      */
-    protected void applyWhere(DemoParam example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, DemoParam example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
@@ -261,7 +248,7 @@ public class DemoSqlProvider {
         }
         
         if (sb.length() > 0) {
-            WHERE(sb.toString());
+            sql.WHERE(sb.toString());
         }
     }
 }

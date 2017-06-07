@@ -85,14 +85,14 @@
         <javaClientGenerator type="ANNOTATEDMAPPER"
                              targetPackage="${mbg.javaClientPackage}" targetProject="${mbg.targetProject}">
             <property name="enableSubPackages" value="true" />
-            <property name="useLegacyBuilder" value="true" />
+            <!--<property name="useLegacyBuilder" value="true" />-->
         </javaClientGenerator>
 
         <!-- 配置需要自动生成的表，可配置多个table标签 -->
         <table tableName="table_to_do" domainObjectName="ToDo" >
 
             <!-- 数据库的 schema 可以认为是数据库的名称 -->
-            <!--<property name="runtimeSchema" value="todo"/>-->
+            <property name="runtimeSchema" value="todo"/>
 
             <!-- 生成的business文件名称,不配置，则不会生成business  -->
             <property name="generatedBusinessName" value="ToDoBusiness"/>
@@ -187,14 +187,14 @@
         <javaClientGenerator type="ANNOTATEDMAPPER"
                              targetPackage="${mbg.javaClientPackage}" targetProject="${mbg.targetProject}">
             <property name="enableSubPackages" value="true" />
-            <property name="useLegacyBuilder" value="true" />
+            <!--<property name="useLegacyBuilder" value="true" />-->
         </javaClientGenerator>
 
         <!-- 配置需要自动生成的表，可配置多个table标签 -->
         <table tableName="table_demo" domainObjectName="Demo" >
 
             <!-- 数据库的 schema 可以认为是数据库的名称 -->
-            <!--<property name="runtimeSchema" value="demo"/>-->
+            <property name="runtimeSchema" value="demo"/>
 
             <!-- 生成的business文件名称,不配置，则不会生成business  -->
             <property name="generatedBusinessName" value="DemoBusiness"/>
