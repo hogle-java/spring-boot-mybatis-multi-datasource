@@ -5,7 +5,6 @@ package net.yuanmomo.springboot;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -23,7 +22,6 @@ import java.util.Map;
 
 @SpringBootApplication
 @ComponentScan("net.yuanmomo.springboot")
-@MapperScan("net.yuanmomo.springboot.mybatis.mapper")
 public class Application {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
