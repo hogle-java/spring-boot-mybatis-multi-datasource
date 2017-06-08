@@ -1,5 +1,6 @@
 package net.yuanmomo.springboot.business.mybatis;
 
+import java.util.List;
 import net.yuanmomo.springboot.bean.ToDo;
 import net.yuanmomo.springboot.bean.ToDoParam;
 import net.yuanmomo.springboot.mybatis.mapper.todo.ToDoMapper;
@@ -10,8 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class ToDoBusiness {

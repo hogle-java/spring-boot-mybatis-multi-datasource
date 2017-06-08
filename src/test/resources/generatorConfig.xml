@@ -28,6 +28,10 @@
         </plugin>
 
         <!-- *******************************下面的插件都是自定义插件******************************* -->
+        <!-- 增加一个 selectOne 的 方法  -->
+        <plugin type="net.yuanmomo.springboot.mbg.plugin.selectone.MapperAddSelectOneByExamplePlugin" />
+        <plugin type="net.yuanmomo.springboot.mbg.plugin.selectone.ProviderAddSelectOneByExamplePlugin" />
+
         <!-- 分页插件， 自带的是假分页，效率很低  -->
         <plugin type="net.yuanmomo.springboot.mbg.plugin.PaginationPlugin" />
 
@@ -85,7 +89,6 @@
         <javaClientGenerator type="ANNOTATEDMAPPER"
                              targetPackage="${mbg.javaClientPackage}" targetProject="${mbg.targetProject}">
             <property name="enableSubPackages" value="true" />
-            <!--<property name="useLegacyBuilder" value="true" />-->
         </javaClientGenerator>
 
         <!-- 配置需要自动生成的表，可配置多个table标签 -->
@@ -130,6 +133,10 @@
         </plugin>
 
         <!-- *******************************下面的插件都是自定义插件******************************* -->
+        <!-- 增加一个 selectOne 的 方法  -->
+        <plugin type="net.yuanmomo.springboot.mbg.plugin.selectone.MapperAddSelectOneByExamplePlugin" />
+        <plugin type="net.yuanmomo.springboot.mbg.plugin.selectone.ProviderAddSelectOneByExamplePlugin" />
+
         <!-- 分页插件， 自带的是假分页，效率很低  -->
         <plugin type="net.yuanmomo.springboot.mbg.plugin.PaginationPlugin" />
 
@@ -156,7 +163,6 @@
             <property name="exceptionClass" value="${mbg.exceptionClass}"/>
         </plugin>
         <!-- *******************************上面的插件都是自定义插件******************************* -->
-
 
         <!-- 生成的注释配置，不输入注释中的时间 -->
         <commentGenerator>
@@ -187,7 +193,6 @@
         <javaClientGenerator type="ANNOTATEDMAPPER"
                              targetPackage="${mbg.javaClientPackage}" targetProject="${mbg.targetProject}">
             <property name="enableSubPackages" value="true" />
-            <!--<property name="useLegacyBuilder" value="true" />-->
         </javaClientGenerator>
 
         <!-- 配置需要自动生成的表，可配置多个table标签 -->

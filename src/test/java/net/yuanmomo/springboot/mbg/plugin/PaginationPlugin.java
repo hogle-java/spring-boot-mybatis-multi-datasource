@@ -137,6 +137,34 @@ public class PaginationPlugin extends PluginAdapter {
         commentGenerator.addGeneralMethodComment(method, introspectedTable);
         topLevelClass.addMethod(method);
     }
+
+    @Override
+    public boolean providerSelectByExampleWithoutBLOBsMethodGenerated(
+            Method method,
+            TopLevelClass topLevelClass,
+            IntrospectedTable introspectedTable) {
+
+        List<String> bodyLines = method.getBodyLines();
+        // delete the line of "return sql.toString();"
+        bodyLines.remove(bodyLines.size() - 1);
+
+        bodyLines.add("// add pagination for mysql with limit clause ");
+        bodyLines.add("StringBuilder sqlBuilder = new StringBuilder(sql.toString());");
+        bodyLines.add("if(example != null && (example.getStart() > -1 || example.getCount() > -1) ){");
+        bodyLines.add("sqlBuilder.append(\" limit \");");
+        bodyLines.add("if(example.getStart() > -1 && example.getCount() > -1){");
+        bodyLines.add("sqlBuilder.append(example.getStart()).append(\",\").append(example.getCount());");
+        bodyLines.add("}else if( example.getStart() > -1 ){");
+        bodyLines.add("sqlBuilder.append(example.getStart());");
+        bodyLines.add("}else if( example.getCount() > -1 ){");
+        bodyLines.add("sqlBuilder.append(example.getCount());");
+        bodyLines.add("}");
+        bodyLines.add("}");
+        bodyLines.add("return sqlBuilder.toString();");
+
+        return super.providerSelectByExampleWithoutBLOBsMethodGenerated(method, topLevelClass, introspectedTable);
+    }
+
     /**
      * This plugin is always valid - no properties are required
      */

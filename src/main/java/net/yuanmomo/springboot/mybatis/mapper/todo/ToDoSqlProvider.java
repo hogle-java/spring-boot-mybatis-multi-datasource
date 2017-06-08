@@ -1,12 +1,13 @@
 package net.yuanmomo.springboot.mybatis.mapper.todo;
 
-import java.util.List;
-import java.util.Map;
 import net.yuanmomo.springboot.bean.ToDo;
+import net.yuanmomo.springboot.bean.ToDoParam;
 import net.yuanmomo.springboot.bean.ToDoParam.Criteria;
 import net.yuanmomo.springboot.bean.ToDoParam.Criterion;
-import net.yuanmomo.springboot.bean.ToDoParam;
 import org.apache.ibatis.jdbc.SQL;
+
+import java.util.List;
+import java.util.Map;
 
 public class ToDoSqlProvider {
 
@@ -79,7 +80,19 @@ public class ToDoSqlProvider {
             sql.ORDER_BY(example.getOrderByClause());
         }
         
-        return sql.toString();
+        // add pagination for mysql with limit clause 
+        StringBuilder sqlBuilder = new StringBuilder(sql.toString());
+        if(example != null && (example.getStart() > -1 || example.getCount() > -1) ){
+            sqlBuilder.append(" limit ");
+            if(example.getStart() > -1 && example.getCount() > -1){
+                sqlBuilder.append(example.getStart()).append(",").append(example.getCount());
+            }else if( example.getStart() > -1 ){
+                sqlBuilder.append(example.getStart());
+            }else if( example.getCount() > -1 ){
+                sqlBuilder.append(example.getCount());
+            }
+        }
+        return sqlBuilder.toString();
     }
 
     /**

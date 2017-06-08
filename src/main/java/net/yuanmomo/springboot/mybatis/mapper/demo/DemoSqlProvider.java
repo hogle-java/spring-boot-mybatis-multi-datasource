@@ -79,7 +79,19 @@ public class DemoSqlProvider {
             sql.ORDER_BY(example.getOrderByClause());
         }
         
-        return sql.toString();
+        // add pagination for mysql with limit clause 
+        StringBuilder sqlBuilder = new StringBuilder(sql.toString());
+        if(example != null && (example.getStart() > -1 || example.getCount() > -1) ){
+            sqlBuilder.append(" limit ");
+            if(example.getStart() > -1 && example.getCount() > -1){
+                sqlBuilder.append(example.getStart()).append(",").append(example.getCount());
+            }else if( example.getStart() > -1 ){
+                sqlBuilder.append(example.getStart());
+            }else if( example.getCount() > -1 ){
+                sqlBuilder.append(example.getCount());
+            }
+        }
+        return sqlBuilder.toString();
     }
 
     /**
