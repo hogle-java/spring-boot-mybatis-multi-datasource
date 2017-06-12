@@ -45,15 +45,12 @@ public class DemoSqlProvider {
     public String insertSelective(Demo record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("demo.table_demo");
-        
         if (record.getNumber() != null) {
             sql.VALUES("number", "#{number,jdbcType=INTEGER}");
         }
-        
         if (record.getVersion() != null) {
             sql.VALUES("version", "#{version,jdbcType=BIGINT}");
         }
-        
         return sql.toString();
     }
 
@@ -74,20 +71,18 @@ public class DemoSqlProvider {
         sql.SELECT("version");
         sql.FROM("demo.table_demo");
         applyWhere(sql, example, false);
-        
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-        
         // add pagination for mysql with limit clause 
         StringBuilder sqlBuilder = new StringBuilder(sql.toString());
-        if(example != null && (example.getStart() > -1 || example.getCount() > -1) ){
+        if (example != null && (example.getStart() > -1 || example.getCount() > -1)) {
             sqlBuilder.append(" limit ");
-            if(example.getStart() > -1 && example.getCount() > -1){
+            if (example.getStart() > -1 && example.getCount() > -1) {
                 sqlBuilder.append(example.getStart()).append(",").append(example.getCount());
-            }else if( example.getStart() > -1 ){
+            } else if (example.getStart() > -1) {
                 sqlBuilder.append(example.getStart());
-            }else if( example.getCount() > -1 ){
+            } else if (example.getCount() > -1) {
                 sqlBuilder.append(example.getCount());
             }
         }
@@ -103,22 +98,17 @@ public class DemoSqlProvider {
     public String updateByExampleSelective(Map<String, Object> parameter) {
         Demo record = (Demo) parameter.get("record");
         DemoParam example = (DemoParam) parameter.get("example");
-        
         SQL sql = new SQL();
         sql.UPDATE("demo.table_demo");
-        
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
         }
-        
         if (record.getNumber() != null) {
             sql.SET("number = #{record.number,jdbcType=INTEGER}");
         }
-        
         if (record.getVersion() != null) {
             sql.SET("version = #{record.version,jdbcType=BIGINT}");
         }
-        
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -132,11 +122,9 @@ public class DemoSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
         sql.UPDATE("demo.table_demo");
-        
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("number = #{record.number,jdbcType=INTEGER}");
         sql.SET("version = #{record.version,jdbcType=BIGINT}");
-        
         DemoParam example = (DemoParam) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
@@ -151,17 +139,13 @@ public class DemoSqlProvider {
     public String updateByPrimaryKeySelective(Demo record) {
         SQL sql = new SQL();
         sql.UPDATE("demo.table_demo");
-        
         if (record.getNumber() != null) {
             sql.SET("number = #{number,jdbcType=INTEGER}");
         }
-        
         if (record.getVersion() != null) {
             sql.SET("version = #{version,jdbcType=BIGINT}");
         }
-        
         sql.WHERE("id = #{id,jdbcType=BIGINT}");
-        
         return sql.toString();
     }
 
@@ -175,7 +159,6 @@ public class DemoSqlProvider {
         if (example == null) {
             return;
         }
-        
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -197,7 +180,6 @@ public class DemoSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -209,7 +191,6 @@ public class DemoSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -220,14 +201,13 @@ public class DemoSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -258,9 +238,33 @@ public class DemoSqlProvider {
                 sb.append(')');
             }
         }
-        
         if (sb.length() > 0) {
             sql.WHERE(sb.toString());
         }
+    }
+
+    /**
+     * This method was generated by MyBatis Generator.
+     * This method corresponds to the database table table_demo
+     *
+     * @mbg.generated
+     */
+    public String getOneByExample(DemoParam example) {
+        SQL sql = new SQL();
+        if (example != null && example.isDistinct()) {
+            sql.SELECT_DISTINCT("id");
+        } else {
+            sql.SELECT("id");
+        }
+        sql.SELECT("number");
+        sql.SELECT("version");
+        sql.FROM("demo.table_demo");
+        applyWhere(sql, example, false);
+        if (example != null && example.getOrderByClause() != null) {
+            sql.ORDER_BY(example.getOrderByClause());
+        }
+        StringBuilder sqlBuilder = new StringBuilder(sql.toString());
+        sqlBuilder.append(" limit 1 ");
+        return sqlBuilder.toString();
     }
 }

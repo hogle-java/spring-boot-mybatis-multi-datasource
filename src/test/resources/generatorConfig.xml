@@ -28,37 +28,23 @@
         </plugin>
 
         <!-- *******************************下面的插件都是自定义插件******************************* -->
-        <!-- 增加一个 selectOne 的 方法  -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.selectone.MapperAddSelectOneByExamplePlugin" />
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.selectone.ProviderAddSelectOneByExamplePlugin" />
+        <!-- add an extra selectOneByExample method into mapper class -->
+        <plugin type="com.github.yuanmomo.mybatis.mbg.plugin.selectone.MapperAddSelectOneByExamplePlugin">
+            <property name="methodName" value="getOneByExample"/>
+        </plugin>
 
-        <!-- 分页插件， 自带的是假分页，效率很低  -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.PaginationPlugin" />
+        <!-- add an extra batchInsert method into mapper class -->
+        <plugin type="com.github.yuanmomo.mybatis.mbg.plugin.batch.MySqlBatchInsertPlugin">
+            <property name="methodName" value="batchInsert"/>
+        </plugin>
 
-        <!-- 生成别名，在表关联简单查询时使用  -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.alias.AliasPlugin" />
+        <!-- Pagination plugin. -->
+        <plugin type="com.github.yuanmomo.mybatis.mbg.plugin.PaginationPlugin"/>
 
-        <!-- 单独生成一个DAO的JAVA文件和XML文件，存放自定义SQL，将自动生成和自定义分开 -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.DAOPlugin" >
+        <!-- Extra DAO interface. -->
+        <plugin type="com.github.yuanmomo.mybatis.mbg.plugin.DAOPlugin">
             <property name="typeName" value="DAO"/>
         </plugin>
-
-        <!-- 生成business，简单的增删改查业务 -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.business.BusinessPlugin" >
-            <property name="businessPackage" value="${mbg.businessPackage}"/>
-        </plugin>
-
-        <!-- 生成controller, 不再需要单独配置生成business插件，会默认自动生成business
-            type="${pluginBasePackage}.controller.jsp.ControllerPlugin" ==> 生成返回视图的controller
-            type="${pluginBasePackage}.controller.json.ControllerPlugin" ==> 生成返回json的controller
-         -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.controller.json.ControllerPlugin" >
-            <property name="businessPackage" value="${mbg.businessPackage}"/>
-            <property name="controllerPackage" value="${mbg.controllerPackage}"/>
-            <property name="exceptionClass" value="${mbg.exceptionClass}"/>
-        </plugin>
-        <!-- *******************************上面的插件都是自定义插件******************************* -->
-
 
         <!-- 生成的注释配置，不输入注释中的时间 -->
         <commentGenerator>
@@ -79,12 +65,6 @@
         <javaModelGenerator targetPackage="${mbg.modelPackage}"
                             targetProject="${mbg.targetProject}" />
 
-        <!-- java 生成xml文件的配置 -->
-        <!--<sqlMapGenerator targetPackage="${mbg.sqlMapPackage}"-->
-                         <!--targetProject="${mbg.targetProject}">-->
-            <!--<property name="enableSubPackages" value="true" />-->
-        <!--</sqlMapGenerator>-->
-
         <!-- java 生成 mapper类的配置 -->
         <javaClientGenerator type="ANNOTATEDMAPPER"
                              targetPackage="${mbg.javaClientPackage}" targetProject="${mbg.targetProject}">
@@ -99,9 +79,6 @@
 
             <!-- 生成的business文件名称,不配置，则不会生成business  -->
             <property name="generatedBusinessName" value="ToDoBusiness"/>
-
-            <!-- 生成的controller文件名称，不配置，则不会生成controller -->
-            <!--<property name="generatedControllerName" value="ToDoController"/>-->
 
             <!-- 是否生成自增长主键 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
@@ -133,36 +110,23 @@
         </plugin>
 
         <!-- *******************************下面的插件都是自定义插件******************************* -->
-        <!-- 增加一个 selectOne 的 方法  -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.selectone.MapperAddSelectOneByExamplePlugin" />
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.selectone.ProviderAddSelectOneByExamplePlugin" />
+        <!-- add an extra selectOneByExample method into mapper class -->
+        <plugin type="com.github.yuanmomo.mybatis.mbg.plugin.selectone.MapperAddSelectOneByExamplePlugin">
+            <property name="methodName" value="getOneByExample"/>
+        </plugin>
 
-        <!-- 分页插件， 自带的是假分页，效率很低  -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.PaginationPlugin" />
+        <!-- add an extra batchInsert method into mapper class -->
+        <plugin type="com.github.yuanmomo.mybatis.mbg.plugin.batch.MySqlBatchInsertPlugin">
+            <property name="methodName" value="batchInsert"/>
+        </plugin>
 
-        <!-- 生成别名，在表关联简单查询时使用  -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.alias.AliasPlugin" />
+        <!-- Pagination plugin. -->
+        <plugin type="com.github.yuanmomo.mybatis.mbg.plugin.PaginationPlugin"/>
 
-        <!-- 单独生成一个DAO的JAVA文件和XML文件，存放自定义SQL，将自动生成和自定义分开 -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.DAOPlugin" >
+        <!-- Extra DAO interface. -->
+        <plugin type="com.github.yuanmomo.mybatis.mbg.plugin.DAOPlugin">
             <property name="typeName" value="DAO"/>
         </plugin>
-
-        <!-- 生成business，简单的增删改查业务 -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.business.BusinessPlugin" >
-            <property name="businessPackage" value="${mbg.businessPackage}"/>
-        </plugin>
-
-        <!-- 生成controller, 不再需要单独配置生成business插件，会默认自动生成business
-            type="${pluginBasePackage}.controller.jsp.ControllerPlugin" ==> 生成返回视图的controller
-            type="${pluginBasePackage}.controller.json.ControllerPlugin" ==> 生成返回json的controller
-         -->
-        <plugin type="net.yuanmomo.springboot.mbg.plugin.controller.json.ControllerPlugin" >
-            <property name="businessPackage" value="${mbg.businessPackage}"/>
-            <property name="controllerPackage" value="${mbg.controllerPackage}"/>
-            <property name="exceptionClass" value="${mbg.exceptionClass}"/>
-        </plugin>
-        <!-- *******************************上面的插件都是自定义插件******************************* -->
 
         <!-- 生成的注释配置，不输入注释中的时间 -->
         <commentGenerator>
@@ -183,12 +147,6 @@
         <javaModelGenerator targetPackage="${mbg.modelPackage}"
                             targetProject="${mbg.targetProject}" />
 
-        <!-- java 生成xml文件的配置 -->
-        <!--<sqlMapGenerator targetPackage="${mbg.sqlMapPackage}"-->
-        <!--targetProject="${mbg.targetProject}">-->
-        <!--<property name="enableSubPackages" value="true" />-->
-        <!--</sqlMapGenerator>-->
-
         <!-- java 生成 mapper类的配置 -->
         <javaClientGenerator type="ANNOTATEDMAPPER"
                              targetPackage="${mbg.javaClientPackage}" targetProject="${mbg.targetProject}">
@@ -203,9 +161,6 @@
 
             <!-- 生成的business文件名称,不配置，则不会生成business  -->
             <property name="generatedBusinessName" value="DemoBusiness"/>
-
-            <!-- 生成的controller文件名称，不配置，则不会生成controller -->
-            <!--<property name="generatedControllerName" value="DemoController"/>-->
 
             <!-- 是否生成自增长主键 -->
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>

@@ -5,7 +5,6 @@ import net.yuanmomo.springboot.bean.ToDoParam;
 import net.yuanmomo.springboot.bean.ToDoParam.Criteria;
 import net.yuanmomo.springboot.bean.ToDoParam.Criterion;
 import org.apache.ibatis.jdbc.SQL;
-
 import java.util.List;
 import java.util.Map;
 
@@ -46,15 +45,15 @@ public class ToDoSqlProvider {
     public String insertSelective(ToDo record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("todo.table_to_do");
-        
         if (record.getToDo() != null) {
             sql.VALUES("to_do", "#{toDo,jdbcType=INTEGER}");
         }
-        
         if (record.getRemark() != null) {
             sql.VALUES("remark", "#{remark,jdbcType=BIGINT}");
         }
-        
+        if (record.getTestColumn() != null) {
+            sql.VALUES("test_column", "#{testColumn,jdbcType=VARCHAR}");
+        }
         return sql.toString();
     }
 
@@ -73,22 +72,21 @@ public class ToDoSqlProvider {
         }
         sql.SELECT("to_do");
         sql.SELECT("remark");
+        sql.SELECT("test_column");
         sql.FROM("todo.table_to_do");
         applyWhere(sql, example, false);
-        
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-        
         // add pagination for mysql with limit clause 
         StringBuilder sqlBuilder = new StringBuilder(sql.toString());
-        if(example != null && (example.getStart() > -1 || example.getCount() > -1) ){
+        if (example != null && (example.getStart() > -1 || example.getCount() > -1)) {
             sqlBuilder.append(" limit ");
-            if(example.getStart() > -1 && example.getCount() > -1){
+            if (example.getStart() > -1 && example.getCount() > -1) {
                 sqlBuilder.append(example.getStart()).append(",").append(example.getCount());
-            }else if( example.getStart() > -1 ){
+            } else if (example.getStart() > -1) {
                 sqlBuilder.append(example.getStart());
-            }else if( example.getCount() > -1 ){
+            } else if (example.getCount() > -1) {
                 sqlBuilder.append(example.getCount());
             }
         }
@@ -104,22 +102,20 @@ public class ToDoSqlProvider {
     public String updateByExampleSelective(Map<String, Object> parameter) {
         ToDo record = (ToDo) parameter.get("record");
         ToDoParam example = (ToDoParam) parameter.get("example");
-        
         SQL sql = new SQL();
         sql.UPDATE("todo.table_to_do");
-        
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
         }
-        
         if (record.getToDo() != null) {
             sql.SET("to_do = #{record.toDo,jdbcType=INTEGER}");
         }
-        
         if (record.getRemark() != null) {
             sql.SET("remark = #{record.remark,jdbcType=BIGINT}");
         }
-        
+        if (record.getTestColumn() != null) {
+            sql.SET("test_column = #{record.testColumn,jdbcType=VARCHAR}");
+        }
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -133,11 +129,10 @@ public class ToDoSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
         sql.UPDATE("todo.table_to_do");
-        
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("to_do = #{record.toDo,jdbcType=INTEGER}");
         sql.SET("remark = #{record.remark,jdbcType=BIGINT}");
-        
+        sql.SET("test_column = #{record.testColumn,jdbcType=VARCHAR}");
         ToDoParam example = (ToDoParam) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
@@ -152,17 +147,16 @@ public class ToDoSqlProvider {
     public String updateByPrimaryKeySelective(ToDo record) {
         SQL sql = new SQL();
         sql.UPDATE("todo.table_to_do");
-        
         if (record.getToDo() != null) {
             sql.SET("to_do = #{toDo,jdbcType=INTEGER}");
         }
-        
         if (record.getRemark() != null) {
             sql.SET("remark = #{remark,jdbcType=BIGINT}");
         }
-        
+        if (record.getTestColumn() != null) {
+            sql.SET("test_column = #{testColumn,jdbcType=VARCHAR}");
+        }
         sql.WHERE("id = #{id,jdbcType=BIGINT}");
-        
         return sql.toString();
     }
 
@@ -176,7 +170,6 @@ public class ToDoSqlProvider {
         if (example == null) {
             return;
         }
-        
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -198,7 +191,6 @@ public class ToDoSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -210,7 +202,6 @@ public class ToDoSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -221,14 +212,13 @@ public class ToDoSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -259,9 +249,34 @@ public class ToDoSqlProvider {
                 sb.append(')');
             }
         }
-        
         if (sb.length() > 0) {
             sql.WHERE(sb.toString());
         }
+    }
+
+    /**
+     * This method was generated by MyBatis Generator.
+     * This method corresponds to the database table table_to_do
+     *
+     * @mbg.generated
+     */
+    public String getOneByExample(ToDoParam example) {
+        SQL sql = new SQL();
+        if (example != null && example.isDistinct()) {
+            sql.SELECT_DISTINCT("id");
+        } else {
+            sql.SELECT("id");
+        }
+        sql.SELECT("to_do");
+        sql.SELECT("remark");
+        sql.SELECT("test_column");
+        sql.FROM("todo.table_to_do");
+        applyWhere(sql, example, false);
+        if (example != null && example.getOrderByClause() != null) {
+            sql.ORDER_BY(example.getOrderByClause());
+        }
+        StringBuilder sqlBuilder = new StringBuilder(sql.toString());
+        sqlBuilder.append(" limit 1 ");
+        return sqlBuilder.toString();
     }
 }
